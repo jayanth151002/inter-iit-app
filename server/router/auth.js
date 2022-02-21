@@ -1,21 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const app = express()
+require("chromedriver");
+let swd = require("selenium-webdriver");
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(router);
 
 
-router.get('/trial', async (req, res) => {
-    console.log("In server")
-    res.status(200).send("Connected to server")
-})
 
 router.post('/login', async (req, res) => {
-    console.log(req.body)
+    const { rollno, password } = (req.body)
+    let tab = new swd.Builder().forBrowser("chrome").build();
+    let Opentab = tab.get("https://www.iitm.ac.in/viewgrades/");
+    Opentab
+        .then(() => tab.manage().setTimeouts({ implicit: 10000, }))
+        .then(() => tab.findElement(swd.By.xpath('//*[@id="wrapper"]/div[1]/form/center/table[1]/tbody/tr[1]/td[2]/input')))
+        .then((usernameBox) => usernameBox.sendKeys(rollno))
+        .then(() => tab.findElement(swd.By.xpath('//*[@id="wrapper"]/div[1]/form/center/table[1]/tbody/tr[2]/td[2]/input')))
+        .then((passwordBox) => passwordBox.sendKeys(password))
+        .then(() => tab.findElement(swd.By.xpath('//*[@id="wrapper"]/div[1]/form/center/table[2]/tbody/tr/td[1]/input')))
+        .then((signInBtn) => signInBtn.click())
+        .then(() => console.log("Successfully signed in View Grades IITM!"))
+        .catch((err) => console.log("Error ", err, " occurred!"));
     res.status(200).send("Logged In")
 })
 
 
 module.exports = app;
+
