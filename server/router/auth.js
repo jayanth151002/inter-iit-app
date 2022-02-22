@@ -24,8 +24,23 @@ router.post('/login', async (req, res) => {
         .then(() => tab.findElement(swd.By.xpath('//*[@id="wrapper"]/div[1]/form/center/table[2]/tbody/tr/td[1]/input')))
         .then((signInBtn) => signInBtn.click())
         .then(() => console.log("Successfully signed in View Grades IITM!"))
+        .then(() => tab.switchTo().frame(1))
+        .then(() => tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody`)).getText()
+        // {
+        //     var flag = true
+        //     i = 1
+        //     const textData = []
+        //     while (flag) {
+        //         const text = tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody/tr[${i}]`)).getText()
+        //             .then((text) => console.log(text.getText()))
+        //     }
+        //     console.log("Loop over")
+        //     return textData
+        // }
+        )
+        .then((gradeText) => console.log(gradeText))
+        .then(() => res.status(200).send("Logged In"))
         .catch((err) => console.log("Error ", err, " occurred!"));
-    res.status(200).send("Logged In")
 })
 
 
