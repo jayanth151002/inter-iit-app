@@ -25,20 +25,13 @@ router.post('/login', async (req, res) => {
         .then((signInBtn) => signInBtn.click())
         .then(() => console.log("Successfully signed in View Grades IITM!"))
         .then(() => tab.switchTo().frame(1))
-        .then(() => tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody`)).getText()
-        // {
-        //     var flag = true
-        //     i = 1
-        //     const textData = []
-        //     while (flag) {
-        //         const text = tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody/tr[${i}]`)).getText()
-        //             .then((text) => console.log(text.getText()))
-        //     }
-        //     console.log("Loop over")
-        //     return textData
-        // }
-        )
-        .then((gradeText) => console.log(gradeText))
+        .then(() => tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody`)).getText())
+        .then((gradeData) => {
+            var parsedArr = gradeData.split('\n');
+            parsedArr = parsedArr.map((arr) => arr.split(' '))
+            return parsedArr
+        })
+        .then((gradeText) => gradeText.map(arr => { if (arr[arr.length - 2].length === 1) console.log(arr[1], arr[arr.length - 3], arr[arr.length - 2]) }))
         .then(() => res.status(200).send("Logged In"))
         .catch((err) => console.log("Error ", err, " occurred!"));
 })
