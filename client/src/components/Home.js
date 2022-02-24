@@ -17,6 +17,10 @@ const Home = () => {
             .catch(res => console.log(res))
     }
 
+    const handleDel = () => {
+        axios.delete('/delete')
+    }
+
     return (
         <div>
             Home
@@ -31,8 +35,13 @@ const Home = () => {
                 </div>
                 <button onClick={handleSubmit}>Submit</button>
             </form>
+            <div>
+                <button onClick={handleDel}>Delete</button>
+            </div>
         </div>
     )
 }
+
+
 
 export default Home

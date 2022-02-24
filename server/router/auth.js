@@ -1,8 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const app = express()
+const mongoose = require('mongoose');
+const Students = require('../models/schema')
 require("chromedriver");
 let swd = require("selenium-webdriver");
+const url = 'mongodb://localhost:27017/grades';
+const connect = mongoose.connect(url);
+connect.then((db) => {
+    console.log('Connected correctly to database')
+})
+
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +20,8 @@ app.use(router);
 
 
 router.post('/login', async (req, res) => {
-    const { rollno, password } = (req.body)
+    const { rollno, password } = req.body
+    var gradeArray
     let tab = new swd.Builder().forBrowser("chrome").build();
     let Opentab = tab.get("https://www.iitm.ac.in/viewgrades/");
     Opentab
@@ -33,9 +42,38 @@ router.post('/login', async (req, res) => {
             else return null
         }).filter((obj) => obj != null)
         )
-        .then((gradeArr) => console.log(gradeArr))
-        .then(() => res.status(200).send("Logged In"))
+        .then((gradeArr) => gradeArray = gradeArr)
+        .then(() => tab.findElement(swd.By.xpath(`/html/body/center/table[1]/tbody/tr`)).getText())
+        .then((data) => data.split(" - "))
+        .then((data) => {
+            const newStu = Students({
+                Rollno: data[0],
+                Name: data[1],
+                Program: data[2],
+                Grades: gradeArray
+            })
+            return newStu.save()
+                .then((dish) => {
+                    console.log(dish);
+                    return Students.find({});
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+        .then((data) => res.status(200).send(data))
         .catch((err) => console.log("Error ", err, " occurred!"));
+})
+
+router.delete('/delete', async (req, res) => {
+    const rollno = 'AE20B030'
+    Students.findOneAndDelete({ 'Rollno': rollno })
+        .then(() => {
+            res.status(200).send(`${rollno} data Deleted`);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 })
 
 
