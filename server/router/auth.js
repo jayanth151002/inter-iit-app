@@ -73,6 +73,20 @@ router.post('/view', async (req, res) => {
         });
 })
 
+router.get('/viewall', async (req, res) => {
+    Students.find({})
+        .then((data) => {
+            console.log(data)
+            res.send(data)
+        })
+})
+
+router.delete('/deleteall', async (req, res) => {
+    Students.deleteMany({})
+        .then(() => console.log("Done"))
+        .catch((err) => console.log(err))
+})
+
 router.post('/delete', async (req, res) => {
     const { rollno } = req.body
     Students.findOneAndDelete({ 'Rollno': rollno.toUpperCase() })

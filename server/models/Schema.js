@@ -33,4 +33,4 @@ const gradeSchema = new Schema({
     Grades: [objSchema]
 })
 
-module.exports = mongoose.model('Students', gradeSchema)
+module.exports = mongoose.model('GradeData', gradeSchema)
