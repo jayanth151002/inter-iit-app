@@ -26,12 +26,14 @@ router.post('/login', async (req, res) => {
         .then(() => console.log("Successfully signed in View Grades IITM!"))
         .then(() => tab.switchTo().frame(1))
         .then(() => tab.findElement(swd.By.xpath(`/html/body/center/center/table[1]/tbody`)).getText())
-        .then((gradeData) => {
-            var parsedArr = gradeData.split('\n');
-            parsedArr = parsedArr.map((arr) => arr.split(' '))
-            return parsedArr
-        })
-        .then((gradeText) => gradeText.map(arr => { if (arr[arr.length - 2].length === 1) console.log(arr[1], arr[arr.length - 3], arr[arr.length - 2]) }))
+        .then((gradeData) => gradeData.split('\n').map((arr) => arr.split(' ')))
+        .then((gradeText) => gradeText.map(arr => {
+            if (arr[arr.length - 2].length === 1)
+                return Object.fromEntries([["Course", arr[1]], ["Credits", arr[arr.length - 3]], ["Grade", arr[arr.length - 2]]])
+            else return null
+        }).filter((obj) => obj != null)
+        )
+        .then((gradeArr) => console.log(gradeArr))
         .then(() => res.status(200).send("Logged In"))
         .catch((err) => console.log("Error ", err, " occurred!"));
 })
