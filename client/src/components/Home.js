@@ -1,47 +1,36 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+
 
 const Home = () => {
-
-    const [rollno, setRollno] = useState("")
-    const [password, setPassword] = useState("")
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const data = new FormData()
-        data.append('rollno', rollno)
-        data.append('password', password)
-        axios.post('/login', { rollno: rollno, password: password })
-            .then(res => console.log(res.data))
-            .catch(res => console.log(res))
-    }
-
-    const handleDel = () => {
-        axios.delete('/delete')
-    }
-
     return (
         <div>
-            Home
-            <form>
+            <div className="jumbotron text-center">
                 <div>
-                    <label for="rollno">Roll Number</label>
-                    <input type="text" onChange={(e) => setRollno(e.target.value)} autoComplete="off" />
+                    <h1>INTER IIT CONTINGENT SELECTION APPLICATION</h1>
                 </div>
-                <div>
-                    <label for="rollno">Password</label>
-                    <input type="password" onChange={(e) => setPassword(e.target.value)} autoComplete="off" />
+                <div className="name text-left">
+                    <div>
+                        <h5>Jayanth. K</h5>
+                    </div>
+                    <div>
+                        <h5>AE20B030</h5>
+                    </div>
                 </div>
-                <button onClick={handleSubmit}>Submit</button>
-            </form>
-            <div>
-                <button onClick={handleDel}>Delete</button>
+            </div>
+            <div className="container">
+                <div className="row btns">
+                    <div className="col-12 col-sm-4 text-center">
+                        <button className="btn btn-primary"><a style={{ textDecoration: "none", color: "white" }} href='/add'>ADD Grade Data</a></button>
+                    </div>
+                    <div className="col-12 col-sm-4 text-center">
+                        <button className="btn btn-primary"><a style={{ textDecoration: "none", color: "white" }} href='/view'>VIEW Grade Data</a></button>
+                    </div>
+                    <div className="col-12 col-sm-4 text-center">
+                        <button className="btn btn-primary"><a style={{ textDecoration: "none", color: "white" }} href='/delete'>DELETE Grade Data</a></button>
+                    </div>
+                </div>
             </div>
         </div>
     )
 }
-
-
 
 export default Home

@@ -19,7 +19,7 @@ app.use(router);
 
 
 
-router.post('/login', async (req, res) => {
+router.post('/add', async (req, res) => {
     const { rollno, password } = req.body
     var gradeArray
     let tab = new swd.Builder().forBrowser("chrome").build();
@@ -61,15 +61,27 @@ router.post('/login', async (req, res) => {
                     console.log(err);
                 });
         })
-        .then((data) => res.status(200).send(data))
+        .then((data) => res.status(200).send("Grade Data Added to Database"))
+        .then(() => tab.close())
         .catch((err) => console.log("Error ", err, " occurred!"));
 })
 
-router.delete('/delete', async (req, res) => {
-    const rollno = 'AE20B030'
-    Students.findOneAndDelete({ 'Rollno': rollno })
+router.post('/view', async (req, res) => {
+    const { rollno } = req.body
+    Students.findOne({ 'Rollno': rollno.toUpperCase() })
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
+
+router.post('/delete', async (req, res) => {
+    const { rollno } = req.body
+    Students.findOneAndDelete({ 'Rollno': rollno.toUpperCase() })
         .then(() => {
-            res.status(200).send(`${rollno} data Deleted`);
+            res.status(200).send(`${rollno.toUpperCase()} data Deleted`);
         })
         .catch((err) => {
             console.log(err);
