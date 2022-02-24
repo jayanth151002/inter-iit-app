@@ -8,3 +8,8 @@
 .name{
   padding: 20px 30px;
 }
+
+.mini-jumbotron{
+  padding: 2.5%;
+  background-color: rgb(218, 212, 212);
+}

@@ -53,10 +53,6 @@ router.post('/add', async (req, res) => {
                 Grades: gradeArray
             })
             return newStu.save()
-                .then((dish) => {
-                    console.log(dish);
-                    return Students.find({});
-                })
                 .catch((err) => {
                     console.log(err);
                 });
@@ -73,7 +69,7 @@ router.post('/view', async (req, res) => {
             res.status(200).send(data);
         })
         .catch((err) => {
-            console.log(err);
+            throw err;
         });
 })
 
@@ -84,7 +80,7 @@ router.post('/delete', async (req, res) => {
             res.status(200).send(`${rollno.toUpperCase()} data Deleted`);
         })
         .catch((err) => {
-            console.log(err);
+            throw err;
         });
 })
 
