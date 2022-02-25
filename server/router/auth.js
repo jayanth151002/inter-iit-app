@@ -59,7 +59,10 @@ router.post('/add', async (req, res) => {
         })
         .then((data) => res.status(200).send("Grade Data Added to Database"))
         .then(() => tab.close())
-        .catch((err) => console.log("Error ", err, " occurred!"));
+        .catch((err) => {
+            tab.close()
+            res.send("Invalid Login Credentials!!!")
+        });
 })
 
 router.post('/view', async (req, res) => {

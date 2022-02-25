@@ -16,7 +16,7 @@ const Add = () => {
         setmsg("Please wait...your request is being processed. ")
         axios.post('/add', { rollno: rollno, password: password })
             .then(res => { alert(res.data); setmsg("") })
-            .catch(res => console.log(res))
+            .catch(res => alert(res.data))
     }
 
 
