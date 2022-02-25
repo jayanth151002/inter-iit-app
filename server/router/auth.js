@@ -53,13 +53,13 @@ router.post('/add', async (req, res) => {
                 Grades: gradeArray
             })
             return newStu.save()
-                .catch((err) => {
-                    console.log(err);
+                .catch(() => {
+                    res.send("User already found!!!");
                 });
         })
-        .then((data) => res.status(200).send("Grade Data Added to Database"))
+        .then(() => res.status(200).send("Grade Data Added to Database"))
         .then(() => tab.close())
-        .catch((err) => {
+        .catch(() => {
             tab.close()
             res.send("Invalid Login Credentials!!!")
         });
